@@ -5,8 +5,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
@@ -25,9 +23,9 @@ export default function SignIn() {
     event.preventDefault();
 
     try {
-      const response = await axios.post(process.env.REACT_APP_BASE_URL + '/login', {
+      const response = await axios.post('http://localhost:4000/api/admin/login', {
         username,
-        password
+        password,
       });
 
       const result = response.data;
@@ -36,11 +34,12 @@ export default function SignIn() {
 
       if (result['status'] === true) {
         localStorage.setItem('token', result['token']);
-        window.location.href = '/';
+        // เปลี่ยนเส้นทางไปยังหน้า AddEmployee หลังจากเข้าสู่ระบบสำเร็จ
+        window.location.href = '/AddEmployee';
       }
     } catch (error) {
       console.error(error);
-      alert('An error occurred during login.');
+      alert('เกิดข้อผิดพลาดระหว่างการเข้าสู่ระบบ');
     }
   };
 
@@ -54,13 +53,18 @@ export default function SignIn() {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
+            boxShadow: 3, // เพิ่มเงาให้กับกล่อง
+            border: '1px solid #ccc', // เพิ่มขอบให้กับกล่อง
+            padding: 3,
+            borderRadius: 2,
+            backgroundColor: 'white', // ตั้งค่าพื้นหลังเป็นสีขาว
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            เข้าสู่ระบบแอดมิน
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
@@ -68,7 +72,7 @@ export default function SignIn() {
               required
               fullWidth
               id="username"
-              label="Username"
+              label="ชื่อผู้ใช้"
               name="username"
               autoComplete="username"
               autoFocus
@@ -80,7 +84,7 @@ export default function SignIn() {
               required
               fullWidth
               name="password"
-              label="Password"
+              label="รหัสผ่าน"
               type="password"
               id="password"
               autoComplete="current-password"
@@ -89,7 +93,7 @@ export default function SignIn() {
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
+              label="จดจำฉัน"
             />
             <Button
               type="submit"
@@ -97,20 +101,8 @@ export default function SignIn() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              เข้าสู่ระบบ
             </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="/signup" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
           </Box>
         </Box>
       </Container>
